@@ -154,7 +154,7 @@
 					</thead>
 					<tbody >
 						<tr
-							ng-repeat="u in ctrl.getData().listPage ">
+							ng-repeat="u in ctrl.getData().listPage | orderBy:myOrderBy">
 							<td>{{u.idbook}}</td>
 							<td>{{u.author}}</td>
 							<td>{{u.catergory}}</td>
