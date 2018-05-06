@@ -5,6 +5,7 @@ app.run(['$rootScope','$state','LoginService',function($rootScope,$state, LoginS
     $rootScope.$on('$locationChangeStart', 
       function(event){ 
       if(!LoginService.isAuthenticated()) {
+        event.preventDefault();
         $state.transitionTo('login');
       }
     });
