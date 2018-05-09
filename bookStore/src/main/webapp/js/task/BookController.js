@@ -1,3 +1,4 @@
+
 'use strict';
 
 angular.module('crudApp').controller('BookController',['BookService','$scope','$localStorage',
@@ -9,6 +10,12 @@ angular.module('crudApp').controller('BookController',['BookService','$scope','$
 		$scope.check1 = '';
 		$scope.numberOfPages = function() {
 			return getData().page;
+		};
+		$scope.numbercurr=function(page){
+			var a=[];
+			for(var i=0;i<page;i++)
+				a.push(i);
+			return a;
 		};
 		$scope.selectPanging=function(){
 			switch($scope.check1){
@@ -85,7 +92,9 @@ angular.module('crudApp').controller('BookController',['BookService','$scope','$
 				break;
 			}	
 		}
-		$scope.nextPanging=function checks(){
+		$scope.nextPanging=function checks(curr){
+			$scope.currentPage=parseInt(curr);
+			console.log($scope.currentPage);
 			switch($scope.check1){
 			case 'check1':
 				if($scope.seach != null && $scope.seach!='' && /^\d+$/.test($scope.seach)&& $scope.all==true){
@@ -144,7 +153,7 @@ angular.module('crudApp').controller('BookController',['BookService','$scope','$
 				break;
 			default:
 				$localStorage.bk={};
-			$localStorage.bks={};
+				$localStorage.bks={};
 				BookService.loadAllBooks($scope.currentPage,$scope.pageSize);
 				break;
 			}	
@@ -248,7 +257,7 @@ angular.module('crudApp').controller('BookController',['BookService','$scope','$
 		$scope.orderByMe = function(x) {
 			$scope.myOrderBy = x;
 		};
-
+		
 		var self = this;
 		self.getData=getData;
 		self.book = {};
@@ -285,9 +294,9 @@ angular.module('crudApp').controller('BookController',['BookService','$scope','$
 				self.successMessage = 'book created successfully';
 				self.errorMessage = '';
 				self.done = true;
+				
+				$scope.myForm.$setPristine();
 				self.book = {};
-				$scope.myForm
-				.$setPristine();
 				switch($scope.check1){
 				case 'check1':
 					if($scope.seach != null && $scope.seach!='' && /^\d+$/.test($scope.seach)){
@@ -334,7 +343,7 @@ angular.module('crudApp').controller('BookController',['BookService','$scope','$
 				self.errorMessage = '';
 				self.done = true;
 				$scope.myForm.$setPristine();
-				self.book = {};
+//				self.book = {};
 				switch($scope.check1){
 				case 'check1':
 					if($scope.seach != null && $scope.seach!='' && /^\d+$/.test($scope.seach)){
@@ -405,9 +414,3 @@ angular.module('crudApp').controller('BookController',['BookService','$scope','$
 			$scope.myForm.$setPristine(); //reset Form
 		}
 }]);
-angular.module('crudApp').filter('startFrom', function() {
-	return function(input, start) {
-		start = +parseInt(start); //parse to int
-		return input.slice(start);
-	}
-});
